@@ -1,0 +1,56 @@
+@using Labb4BugReport.Data.Models.Bugs
+@using Labb4BugReport.Data.Shared.Requests
+@using Labb4BugReport.FrontEnd.Services
+@inject IBugReportService Service;
+@if (_showContent)
+{
+    <EditForm Model="@_request" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label>Title
+            <InputText id="title" @bind-Value="_request.Title"/>
+        </label>
+        <label> Name
+            <InputText id="name" @bind-Value="_request.PosterName"/>
+        </label>
+        <label>Description
+            <InputTextArea id="text" @bind-Value="_request.Description" />
+        </label>
+
+        <button type="submit">Submit</button>
+        <button @onclick="ToggleContent">Cancel</button>
+    </EditForm>
+}
+else
+{
+    <button @onclick="ToggleContent">Add new report</button>
+}
+@code {
+    [Parameter]
+    public Action OnReportPosted { get; set; }
+    private NewBugReportRequest _request = new NewBugReportRequest();
+
+    
+    private bool _showContent { get; set; } = false;
+    
+
+    private void ToggleContent()
+    {
+        _showContent = !_showContent;
+    }
+    private async void HandleValidSubmit()
+    {
+        try
+        {
+            await Service.Post(_request);
+            ToggleContent();
+            OnReportPosted?.Invoke();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+    }
+}

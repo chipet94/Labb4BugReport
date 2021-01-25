@@ -1,0 +1,43 @@
+@page "/BugReports"
+@using Labb4BugReport.Data.Shared.Views
+@using System.Collections
+@using Labb4BugReport.Data.Models.Bugs
+@using Labb4BugReport.FrontEnd.Services
+@inject IBugReportService BugReportService
+<h3>BugReports</h3>
+@if (bugReports == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    foreach (var report in bugReports)
+    {
+        <BugView BugReport="@report">
+            
+        </BugView>
+    }
+    <AddBugReportBox OnReportPosted="@RefreshReports"></AddBugReportBox>
+}
+
+@code {
+    private IEnumerable<BugReport> bugReports;
+
+    protected override async Task OnInitializedAsync()
+    {
+            RefreshReports();
+    }
+
+    public async void RefreshReports()
+    {
+        bugReports = await BugReportService.GetAll();
+        StateHasChanged();
+    }
+
+    private async Task<BugReport> GetDetailed(int id)
+    {
+        return await BugReportService.Get(id);
+    }
+}

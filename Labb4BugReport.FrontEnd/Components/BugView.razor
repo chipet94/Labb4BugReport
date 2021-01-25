@@ -1,0 +1,45 @@
+@using Labb4BugReport.Data.Shared.Views
+@using Labb4BugReport.FrontEnd.Services
+@using Labb4BugReport.Data.Models.Bugs
+@using Labb4BugReport.Data.Models.Comments
+@inject ICommentService Service;
+
+<Toggleable Title="@BugReport.Title" OnExpand="GetDetails">
+    <InfoField Label="Poster:">@BugReport.PosterName</InfoField>
+        <InfoField Label="Status:">@BugReport.Status</InfoField>
+        <InfoField Label="Date:">@BugReport.Posted</InfoField>
+        <InfoField Label="Description:"><pre>@BugReport.Description</pre></InfoField>
+        
+        <Toggleable Title="Comments">
+            @if (_comments != null)
+            {
+                foreach (var comment in _comments)
+                {
+                    <p>@comment.Text</p>
+                }
+            }
+            else
+            {
+                <p>Loading comments...</p>
+            }
+            <AddCommentBox OnCommentPosted="@GetDetails" BugReportId="@BugReport.Id"></AddCommentBox>
+        </Toggleable>
+</Toggleable>
+
+@code {
+    [Parameter]
+    public BugReport BugReport { get; set; }
+
+    private IEnumerable<UserComment> _comments;
+    //todo get comments instead. 
+    private async void GetDetails()
+    {
+        var result = await Service.GetAllInReport(BugReport.Id);
+        if (result != null)
+        {
+            this._comments = result;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+    
+}

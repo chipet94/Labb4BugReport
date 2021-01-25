@@ -1,0 +1,56 @@
+@using Labb4BugReport.Data.Models.Bugs
+@using Labb4BugReport.Data.Shared.Requests
+@using Labb4BugReport.FrontEnd.Services
+@inject ICommentService Service;
+@if (_showContent)
+{
+    <EditForm Model="@_request" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputTextArea id="text" @bind-Value="_request.Text" />
+
+        <button type="submit">Submit</button>
+        <button @onclick="ToggleContent">Cancel</button>
+    </EditForm>
+}
+else
+{
+    <button @onclick="ToggleContent">Add Comment</button>
+}
+@code {
+    [Parameter]
+    public int BugReportId { get; set; }
+    
+    [Parameter]
+    public Action OnCommentPosted { get; set; }
+
+    private NewCommentRequest _request = new NewCommentRequest();
+
+    
+    private bool _showContent { get; set; } = false;
+    
+
+    private void ToggleContent()
+    {
+        _showContent = !_showContent;
+    }
+    private async void HandleValidSubmit()
+    {
+        try
+        {
+            _request.BugReportId = BugReportId;
+            _request.PosterId = 0;
+            await Service.AddNewComment(_request);
+            ToggleContent();
+            _request = new NewCommentRequest();
+            OnCommentPosted?.Invoke();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+    }
+}

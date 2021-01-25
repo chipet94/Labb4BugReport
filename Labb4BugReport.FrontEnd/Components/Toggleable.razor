@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header iths-header" @onclick="ToggleContent">
+        @Title
+    </div>
+    <div class="card-body" hidden="@_hideContent">
+        @ChildContent
+    </div>
+</div>
+<style>
+    .card-header{
+    margin-bottom: 5px;
+    }
+</style>
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public Action OnExpand { get; set; }
+
+    private bool _hideContent = true;
+
+    private void ToggleContent()
+    {
+        this._hideContent = !_hideContent;
+        if (!this._hideContent)
+        {
+            OnExpand?.Invoke();
+        }
+    }
+
+}
