@@ -4,7 +4,7 @@
 @using Labb4BugReport.Data.Models.Comments
 @inject ICommentService Service;
 
-<Toggleable Title="@BugReport.Title" OnExpand="GetDetails">
+<Toggleable Id="@("report-"+BugReport.Id)" Title="@BugReport.Title" OnExpand="GetDetails">
     <InfoField Label="Poster:">@BugReport.PosterName</InfoField>
         <InfoField Label="Status:">@BugReport.Status</InfoField>
         <InfoField Label="Date:">@BugReport.Posted</InfoField>

@@ -47,7 +47,7 @@ namespace Labb4BugReport.Api
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials()
-                        .WithOrigins("https://localhost:8081", "http://localhost:8080");
+                        .WithOrigins("http://localhost:80","http://0.0.0.0:8080","http://0.0.0.0:80");
                 });
             });
             services.AddControllers();
@@ -66,9 +66,9 @@ namespace Labb4BugReport.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Labb4BugReport.Api v1"));
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Labb4BugReport.Api v1"));
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {

@@ -1,0 +1,24 @@
+ 
+version: '3.4'
+
+services:
+  labb4bugreport.api:
+    ports:
+    - "5000:80"
+    - "5001:443"
+    image: ${DOCKER_REGISTRY-}labb4bugreportapi
+    build:
+      context: .
+      dockerfile: Labb4BugReport.Api//Dockerfile
+    volumes:
+    - ./Labb4BugReport.Api:/usr/src/app
+
+  labb4bugreport.frontend:
+    ports:
+    - "8080:80"
+    image: ${DOCKER_REGISTRY-}labb4bugreportfrontend
+    build:
+      context: .
+      dockerfile: Labb4BugReport.FrontEnd//Dockerfile
+    depends_on:
+        - labb4bugreport.api

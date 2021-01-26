@@ -65,5 +65,34 @@ namespace Labb4BugReport.Api.Controllers
 
             return NoContent();
         }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> RemoveBugReport(int id)
+        {
+            try
+            {
+                await _service.RemoveReport(id);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e?.Message);
+            }
+            return NoContent();
+        }
+        [HttpDelete]
+        [Route("title/{title}")]
+        public async Task<IActionResult> RemoveBugReports(string title)
+        {
+            try
+            {
+                await _service.RemoveReports(title);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e?.Message);
+            }
+            return NoContent();
+        }
+
     }
 }

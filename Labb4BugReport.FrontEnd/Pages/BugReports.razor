@@ -4,23 +4,26 @@
 @using Labb4BugReport.Data.Models.Bugs
 @using Labb4BugReport.FrontEnd.Services
 @inject IBugReportService BugReportService
-<h3>BugReports</h3>
-@if (bugReports == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    foreach (var report in bugReports)
+<div id="bugReportContainer" class="container">
+    <h3>BugReports</h3>
+    @if (bugReports == null)
     {
-        <BugView BugReport="@report">
-            
-        </BugView>
+        <p>
+            <em>Loading...</em>
+        </p>
     }
-    <AddBugReportBox OnReportPosted="@RefreshReports"></AddBugReportBox>
-}
+    else
+    {
+        foreach (var report in bugReports)
+        {
+            <BugView BugReport="@report">
+                
+            </BugView>
+        }
+        <AddBugReportBox OnReportPosted="@RefreshReports"></AddBugReportBox>
+    }
+</div>
+
 
 @code {
     private IEnumerable<BugReport> bugReports;

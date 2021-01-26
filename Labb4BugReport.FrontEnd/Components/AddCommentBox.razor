@@ -8,15 +8,15 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <InputTextArea id="text" @bind-Value="_request.Text" />
+        <InputTextArea id="commentText" @bind-Value="_request.Text" />
 
-        <button type="submit">Submit</button>
+        <button id="addCommentBtn" type="submit">Submit</button>
         <button @onclick="ToggleContent">Cancel</button>
     </EditForm>
 }
 else
 {
-    <button @onclick="ToggleContent">Add Comment</button>
+    <button id="addCommentBtn" @onclick="ToggleContent">Add Comment</button>
 }
 @code {
     [Parameter]

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Labb4BugReport.Data.Database;
 using Labb4BugReport.Data.Models.Bugs;
@@ -38,6 +39,20 @@ namespace Labb4BugReport.Services.BugReportService
             _context.BugReports.Remove(report);
             await _context.SaveChangesAsync();
         }
+        
+        public async Task RemoveReports(string title)
+        {
+            if (string.IsNullOrEmpty(title))
+            {
+                throw new InvalidOperationException($"No title was provided");
+            }
+            var reports = await _context.BugReports.Where(x => x.Title == title).ToArrayAsync();
+            if (reports == null)
+                throw new InvalidOperationException($"No bug-reports with title [{title}] exists. ");
+            
+            _context.BugReports.RemoveRange(reports);
+            await _context.SaveChangesAsync();
+        } 
 
         public async Task AddNewReport(NewBugReportRequest request)
         {

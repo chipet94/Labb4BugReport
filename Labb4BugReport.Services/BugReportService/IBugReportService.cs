@@ -12,6 +12,7 @@ namespace Labb4BugReport.Services.BugReportService
         Task<IEnumerable<BugReport>> GetBugList();
         Task<BugReport> GetReport(int id);
         Task RemoveReport(int id);
+        Task RemoveReports(string title);
         Task AddNewReport(NewBugReportRequest request);
         Task EditReport(int id, EditBugReportRequest request);
     }

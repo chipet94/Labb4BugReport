@@ -14,16 +14,16 @@
             <InputText id="name" @bind-Value="_request.PosterName"/>
         </label>
         <label>Description
-            <InputTextArea id="text" @bind-Value="_request.Description" />
+            <InputTextArea id="description" @bind-Value="_request.Description" />
         </label>
 
-        <button type="submit">Submit</button>
-        <button @onclick="ToggleContent">Cancel</button>
+        <button id="submitReportBtn" type="submit">Submit</button>
+        <button id="cancelReportBtn"  @onclick="ToggleContent">Cancel</button>
     </EditForm>
 }
 else
 {
-    <button @onclick="ToggleContent">Add new report</button>
+    <button id="addReportButton" @onclick="ToggleContent">Add new report</button>
 }
 @code {
     [Parameter]
